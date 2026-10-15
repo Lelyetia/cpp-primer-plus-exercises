@@ -11,6 +11,8 @@ add_executable(arith 3.10_arith.cpp)
 add_executable(divide 3.11_divide.cpp)
 add_executable(modules 3.12_modules.cpp)
 add_executable(assign 3.13_assign.cpp)
+add_executable(typecast 3.14_typecast.cpp)
+
 
 
 
