@@ -8,3 +8,5 @@ add_executable(bondini 3.7_bondini.cpp)
 add_executable(floatnum 3.8_floatnum.cpp)
 add_executable(fltadd 3.9_fltadd.cpp)
 add_executable(arith 3.10_arith.cpp)
+add_executable(divide 3.11_divide.cpp)
+
