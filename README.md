@@ -1,217 +1,141 @@
 # C++ Primer Plus Program Listings
 
+[中文说明](#中文说明) | [English](#english)
+
 ## 中文说明
 
-### 项目简介
+这个仓库记录我学习《C++ Primer Plus》时整理和编写的书中程序清单。代码按章节归档，每个 `.cpp` 文件都是包含自己 `main()` 的独立例程，可以单独编译、运行和调试。
 
-这个仓库用于记录我学习《C++ Primer Plus》过程中手动整理和编写的书中“程序清单”代码。
-
-当前仓库仅记录书里的程序清单代码，不涉及课后练习、复习题、编程练习答案，也不包含书籍原文、PDF、扫描件或其他受版权保护的材料。
-
-### 目录范式
-
-仓库按章节组织，每个章节使用一个独立目录：
+### 目录结构
 
 ```text
-Chapter<章节号> <章节英文标题>/
+cpp-primer-plus-exercises/
+├── .vscode/                            # VS Code 编译、运行和格式化配置
+├── Chapter2 Getting Started with C++/
+├── Chapter3 Dealing with Data/
+├── Chapter4 Compound Types/
+├── .clang-format                       # C/C++ 格式规则
+├── .gitignore
+├── LICENSE
+└── README.md
 ```
 
-章节目录中包含：
+章节目录采用 `Chapter<章节号> <章节英文标题>` 命名，程序文件采用 `<程序清单编号>_<程序名>.cpp` 命名，例如 `Chapter4 Compound Types/4.4_instr2.cpp`。后续章节沿用相同结构。
 
-```text
-<程序清单编号>_<程序名>.cpp
-CMakeLists.txt
-```
+### 环境准备
 
-例如：
-
-```text
-Chapter3 Dealing with Data/
-|-- 3.1_limits.cpp
-|-- 3.2_exceed.cpp
-`-- CMakeLists.txt
-```
-
-根目录只保留项目级文件：
-
-```text
-C++PrimePlus/
-|-- Chapter2 Getting Started with C++/
-|-- Chapter3 Dealing with Data/
-|-- CMakeLists.txt
-|-- LICENSE
-|-- README.md
-|-- .clang-format
-`-- .gitignore
-```
-
-### CMake 组织方式
-
-根目录 `CMakeLists.txt` 只负责项目配置和引入章节目录：
-
-```cmake
-add_subdirectory("Chapter2 Getting Started with C++")
-add_subdirectory("Chapter3 Dealing with Data")
-```
-
-每个章节目录下的 `CMakeLists.txt` 负责声明该章节的程序清单可执行目标。例如：
-
-```cmake
-add_executable(limits 3.1_limits.cpp)
-add_executable(exceed 3.2_exceed.cpp)
-```
-
-这样后续新增程序清单时，通常只需要：
-
-- 在对应章节目录中添加新的 `.cpp` 文件。
-- 在该章节的 `CMakeLists.txt` 中添加对应的 `add_executable(...)`。
-- 只有新增章节目录、调整目录规范或修改仓库说明时，才需要更新本 README。
-
-### 构建环境
-
-- C++11 或更高版本
-- CMake
-- CLion 或其他支持 CMake 的 C++ IDE
-
-### 构建与运行
-
-在项目根目录执行：
+仓库自带的 VS Code 配置适用于 Ubuntu/Linux，使用系统的 `g++` 和 GDB，编译标准为 C++11。
 
 ```bash
-cmake -S . -B build
-cmake --build build
+sudo apt update
+sudo apt install build-essential gdb
 ```
 
-在 CLion 中，可以直接打开项目根目录，等待 CMake 加载完成后选择对应的运行目标。
+安装 [Visual Studio Code](https://code.visualstudio.com/)，以及微软的 [C/C++ 扩展](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools)。
 
-### 当前收录范围
+### 在 VS Code 中使用
 
-目前已开始整理以下章节的程序清单：
+1. 克隆仓库，并在 VS Code 中打开仓库根目录：
 
-| 章节目录 | 内容 |
+   ```bash
+   git clone https://github.com/Lelyetia/cpp-primer-plus-exercises.git
+   cd cpp-primer-plus-exercises
+   code .
+   ```
+
+2. 打开要运行的 `.cpp` 文件，保存并保持它为当前编辑器文件。
+3. 在“运行和调试”面板中选择 **C++：当前文件**。
+4. 按 **Ctrl + F5** 运行，在底部“终端”面板中输入数据、查看输出。
+
+| 操作 | Linux 快捷键 |
 | --- | --- |
-| `Chapter2 Getting Started with C++/` | Chapter 2: Getting Started with C++ |
-| `Chapter3 Dealing with Data/` | Chapter 3: Dealing with Data |
+| 保存并自动格式化 | `Ctrl + S` |
+| 编译并运行当前文件 | `Ctrl + F5` |
+| 编译并调试当前文件 | `F5` |
+| 只编译当前文件 | `Ctrl + Shift + B` |
+| 格式化当前文件 | `Ctrl + Shift + I` |
 
-具体程序清单文件和可执行目标，以各章节目录中的 `.cpp` 文件和 `CMakeLists.txt` 为准。
+调试时，点击行号左侧设置断点，使用 `F10` 逐行执行，使用 `F5` 继续运行。
 
-### 仓库维护规范
+每次启动都会先编译当前文件，再运行生成的程序。所有例程共用 `build/current-example` 作为编译输出，切换例程时会覆盖该文件；一次运行一个例程，结束后再切换。`build` 目录会自动创建，并在 VS Code 文件树中隐藏。
 
-- 只提交源代码、CMake 配置、格式化配置、许可证和说明文档。
-- 不提交本地构建目录，例如 `cmake-build-debug/`、`build/`、`out/`。
-- 不提交编译产物，例如 `.exe`、`.obj`、`.o`。
-- 不提交本地 IDE 配置目录，例如 `.idea/`。
-- README 尽量保持为长期说明文档，不为每个新增程序清单频繁修改。
+### 在终端中使用
 
-### 版权说明
+在仓库根目录执行以下命令，可以编译、运行指定例程：
 
-本仓库仅用于个人学习记录。仓库中的代码为学习过程中手动整理和编写的程序清单代码，不包含书籍原文、扫描件、PDF 或其他受版权保护的材料。
+```bash
+mkdir -p build
+g++ -std=c++11 -g -O0 -Wall -Wextra "Chapter4 Compound Types/4.4_instr2.cpp" -o build/current-example
+./build/current-example
+```
 
----
+替换源文件路径即可运行其他例程。
+
+### 添加程序清单
+
+在相应章节目录中新建按编号命名的 `.cpp` 文件，并编写独立的 `main()`。打开该文件后即可使用上述快捷键，无需为每个例程添加运行配置。
+
+格式规则由 `.clang-format` 统一定义：花括号另起一行，缩进使用 4 个空格。构建产物由 `.gitignore` 忽略，提交时保留源码、共享配置和项目文档。
+
+### 许可证
+
+见 [LICENSE](LICENSE)。
 
 ## English
 
-### Project Overview
+This repository contains program listings organized and written while studying *C++ Primer Plus*. Listings are grouped by chapter. Each `.cpp` file is a standalone program with its own `main()` and can be compiled, run, and debugged individually.
 
-This repository records the program listing code that I manually organize and write while studying *C++ Primer Plus*.
+### Layout
 
-At this stage, this repository only contains program listings from the book. It does not include end-of-chapter exercises, review questions, programming exercise answers, original book text, PDFs, scans, or other copyrighted materials.
+Chapter directories use `Chapter<chapter-number> <chapter-title>`. Source files use `<listing-number>_<program-name>.cpp`, for example `Chapter4 Compound Types/4.4_instr2.cpp`. New chapters follow the same convention.
 
-### Directory Convention
+The `.vscode` directory provides shared build, launch, and formatting settings. The `.clang-format` file defines the C/C++ formatting rules.
 
-The repository is organized by chapter. Each chapter uses an independent directory:
+### Requirements
 
-```text
-Chapter<chapter-number> <chapter-title>/
-```
-
-Each chapter directory contains:
-
-```text
-<program-listing-number>_<program-name>.cpp
-CMakeLists.txt
-```
-
-For example:
-
-```text
-Chapter3 Dealing with Data/
-|-- 3.1_limits.cpp
-|-- 3.2_exceed.cpp
-`-- CMakeLists.txt
-```
-
-The root directory only keeps project-level files:
-
-```text
-C++PrimePlus/
-|-- Chapter2 Getting Started with C++/
-|-- Chapter3 Dealing with Data/
-|-- CMakeLists.txt
-|-- LICENSE
-|-- README.md
-|-- .clang-format
-`-- .gitignore
-```
-
-### CMake Organization
-
-The root `CMakeLists.txt` only handles project-level configuration and includes chapter directories:
-
-```cmake
-add_subdirectory("Chapter2 Getting Started with C++")
-add_subdirectory("Chapter3 Dealing with Data")
-```
-
-Each chapter-level `CMakeLists.txt` declares the executable targets for that chapter's program listings. For example:
-
-```cmake
-add_executable(limits 3.1_limits.cpp)
-add_executable(exceed 3.2_exceed.cpp)
-```
-
-With this structure, adding a new program listing usually only requires:
-
-- Adding a new `.cpp` file to the corresponding chapter directory.
-- Adding the matching `add_executable(...)` entry to that chapter's `CMakeLists.txt`.
-- Updating this README only when adding a new chapter, changing the directory convention, or changing the repository description.
-
-### Build Environment
-
-- C++11 or later
-- CMake
-- CLion or another C++ IDE with CMake support
-
-### Build and Run
-
-Run the following commands from the project root:
+The included VS Code configuration targets Ubuntu/Linux, using the system `g++`, GDB, and C++11.
 
 ```bash
-cmake -S . -B build
-cmake --build build
+sudo apt update
+sudo apt install build-essential gdb
 ```
 
-In CLion, open the project root directory directly, wait for CMake to finish loading, and then select the target you want to run.
+Install [Visual Studio Code](https://code.visualstudio.com/) and Microsoft's [C/C++ extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools).
 
-### Current Scope
+### Run in VS Code
 
-The following chapters have been started:
+Clone this repository and open its root directory in VS Code. Open and save the `.cpp` file you want to run, then select **C++：当前文件** in the Run and Debug view.
 
-| Chapter Directory | Content |
+| Action | Linux shortcut |
 | --- | --- |
-| `Chapter2 Getting Started with C++/` | Chapter 2: Getting Started with C++ |
-| `Chapter3 Dealing with Data/` | Chapter 3: Dealing with Data |
+| Save and format | `Ctrl + S` |
+| Build and run the active file | `Ctrl + F5` |
+| Build and debug the active file | `F5` |
+| Build the active file | `Ctrl + Shift + B` |
+| Format the active file | `Ctrl + Shift + I` |
 
-The exact program listing files and executable targets are defined by the `.cpp` files and `CMakeLists.txt` inside each chapter directory.
+Use the integrated terminal for program input and output. Set breakpoints beside the line numbers, press `F10` to step over, and press `F5` to continue debugging.
 
-### Repository Maintenance Rules
+Each launch compiles the active source file first. All listings share the output executable `build/current-example`, which is replaced on each build. Run one listing at a time and finish it before switching. The build directory is created automatically and hidden in the VS Code file tree.
 
-- Commit only source code, CMake configuration, formatting configuration, license, and documentation.
-- Do not commit local build directories such as `cmake-build-debug/`, `build/`, and `out/`.
-- Do not commit compiled artifacts such as `.exe`, `.obj`, and `.o`.
-- Do not commit local IDE configuration directories such as `.idea/`.
-- Keep this README as long-term documentation and avoid updating it for every newly added program listing.
+### Run from a terminal
 
-### Copyright Notice
+From the repository root:
 
-This repository is only for personal study records. The code in this repository is manually organized and written while studying the program listings. It does not include book text, scans, PDFs, or other copyrighted materials.
+```bash
+mkdir -p build
+g++ -std=c++11 -g -O0 -Wall -Wextra "Chapter4 Compound Types/4.4_instr2.cpp" -o build/current-example
+./build/current-example
+```
+
+Replace the source path to run another listing.
+
+### Add a listing
+
+Create a numbered `.cpp` file with its own `main()` in the appropriate chapter directory. The shared VS Code configuration works for new listings without adding per-program launch configurations.
+
+Formatting uses Allman braces and four-space indentation. Build outputs are ignored by Git; commit source files, shared configuration, and documentation.
+
+### License
+
+See [LICENSE](LICENSE).

@@ -1,0 +1,41 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "准备构建目录",
+            "type": "process",
+            "command": "/usr/bin/mkdir",
+            "args": [
+                "-p",
+                "${workspaceFolder}/build"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "never"
+            }
+        },
+        {
+            "label": "编译当前 C++ 文件",
+            "type": "process",
+            "command": "/usr/bin/g++",
+            "args": [
+                "-std=c++11",
+                "-g",
+                "-O0",
+                "-Wall",
+                "-Wextra",
+                "${file}",
+                "-o",
+                "${workspaceFolder}/build/current-example"
+            ],
+            "dependsOn": "准备构建目录",
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}
